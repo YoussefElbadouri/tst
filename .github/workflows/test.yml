@@ -1,13 +1,16 @@
-name: Build
-
+name: Insecure Workflow
 on: [push]
 
 jobs:
-  build:
+  insecure_job:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-    - name: Run dangerous command
-      run: echo "${{ secrets.PASSWORD }}" | bash
+      - name: Expose Secret
+        run: |
+          echo "SECRET=hardcoded123" >> $GITHUB_ENV
+
+      - name: Dangerous Command
+        run: bash -c "$UNTRUSTED_INPUT"
